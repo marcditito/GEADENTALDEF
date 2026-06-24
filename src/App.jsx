@@ -39,8 +39,8 @@ const PRODUCTOS = [
   { id:14, nombre:"Alginato", marca:"Vigodent", categoria:"Yesos", variantes:[{formato:"454g",precio:7200}]},
   { id:15, nombre:"Monómero", marca:"Veracril", categoria:"Monómeros", esColor:true,
     colores:[
-      {color:"Termocurado", variantes:[{formato:"1L",precio:35000},{formato:"500ml",precio:17800},{formato:"250ml",precio:9990}]},
-      {color:"Autocurado",  variantes:[{formato:"1L",precio:35000},{formato:"500ml",precio:17800},{formato:"250ml",precio:9990}]},
+      {color:"Termocurado", variantes:[{formato:"1L",precio:35000},{formato:"500ml",precio:18500},{formato:"250ml",precio:9500}]},
+      {color:"Autocurado",  variantes:[{formato:"1L",precio:35000},{formato:"500ml",precio:18500},{formato:"250ml",precio:9500}]},
     ]},
   { id:18, nombre:"Monómero Termocurado", marca:"Marche", categoria:"Monómeros", variantes:[{formato:"75cc",precio:3750},{formato:"210cc",precio:7990}]},
   { id:20, nombre:"Monómero Autocurado", marca:"Marche", categoria:"Monómeros", variantes:[{formato:"75cc",precio:4500},{formato:"210cc",precio:8990}]},
@@ -48,7 +48,7 @@ const PRODUCTOS = [
   { id:23, nombre:"Vaso Dappen Silicona", marca:"-", categoria:"Instrumentos", variantes:[{formato:"Grande",precio:2400},{formato:"Mediano",precio:1900}]},
   { id:24, nombre:"Espátula de Alginato", marca:"-", categoria:"Instrumentos", variantes:[{formato:"Azul",precio:1000},{formato:"Blanca",precio:1000},{formato:"Celeste",precio:1000}]},
   { id:25, nombre:"Espátula de Cemento", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:1800}]},
-  { id:26, nombre:"Espátula de Lecron", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:1500}]},
+  { id:26, nombre:"Espátula de Lecron", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:1800}]},
   { id:27, nombre:"Espátula de Yeso", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:2100}]},
   { id:28, nombre:"Taza de Goma Grande", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:2100}]},
   { id:29, nombre:"Cuchillo de Yeso", marca:"-", categoria:"Instrumentos", variantes:[{formato:"x unidad",precio:2500}]},
@@ -592,24 +592,19 @@ export default function App() {
 
   // Cargar productos guardados al iniciar (si existen)
   React.useEffect(() => {
-    try {
-      const guardado = localStorage.getItem("gd-productos");
-
-      if (guardado) {
-        setProductos(JSON.parse(guardado));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    setCargandoStorage(false);
+    (async () => {
+      try {
+        const r = await window.storage.get("gd-productos");
+        if (r && r.value) setProductos(JSON.parse(r.value));
+      } catch (e) { /* no hay datos guardados aún, usa los por defecto */ }
+      setCargandoStorage(false);
+    })();
   }, []);
 
   // Guardar productos cada vez que cambian (después de cargar)
   React.useEffect(() => {
     if (cargandoStorage) return;
-
-    localStorage.setItem("gd-productos", JSON.stringify(productos));
+    window.storage.set("gd-productos", JSON.stringify(productos)).catch(()=>{});
   }, [productos, cargandoStorage]);
 
   // guardarProducto: agrega un producto nuevo o actualiza uno existente
