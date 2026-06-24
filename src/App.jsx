@@ -590,21 +590,40 @@ export default function App() {
   const [cargandoStorage, setCargandoStorage] = useState(true);
   const [confirmandoEliminar, setConfirmandoEliminar] = useState(null); // guarda el id del producto a confirmar
 
-  // Cargar productos guardados al iniciar (si existen)
+  // VERSION_CATALOGO: subir este número cada vez que se editen los precios/productos
+  // directamente en el código. Esto invalida automáticamente cualquier catálogo viejo
+  // guardado en el navegador del cliente, evitando que datos antiguos rompan la app.
+  const VERSION_CATALOGO = "3";
+
+  // Cargar productos guardados al iniciar (si existen y son de la versión actual).
+  // Usa localStorage del navegador — funciona en Vercel y en cualquier hosting.
+  // Si algo falla o la versión no coincide, usa los productos por defecto del código.
   React.useEffect(() => {
-    (async () => {
-      try {
-        const r = await window.storage.get("gd-productos");
-        if (r && r.value) setProductos(JSON.parse(r.value));
-      } catch (e) { /* no hay datos guardados aún, usa los por defecto */ }
-      setCargandoStorage(false);
-    })();
+    try {
+      const versionGuardada = localStorage.getItem("gd-version");
+      const guardado = localStorage.getItem("gd-productos");
+      if (versionGuardada === VERSION_CATALOGO && guardado) {
+        const parsed = JSON.parse(guardado);
+        // Verificación básica de integridad: debe ser un array con productos válidos
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.every(p => p && p.id && p.nombre)) {
+          setProductos(parsed);
+        }
+      } else {
+        // Versión vieja o inexistente: limpia y usa el catálogo actual del código
+        localStorage.removeItem("gd-productos");
+        localStorage.setItem("gd-version", VERSION_CATALOGO);
+      }
+    } catch (e) { /* localStorage no disponible, usa los productos por defecto */ }
+    setCargandoStorage(false);
   }, []);
 
   // Guardar productos cada vez que cambian (después de cargar)
   React.useEffect(() => {
     if (cargandoStorage) return;
-    window.storage.set("gd-productos", JSON.stringify(productos)).catch(()=>{});
+    try {
+      localStorage.setItem("gd-productos", JSON.stringify(productos));
+      localStorage.setItem("gd-version", VERSION_CATALOGO);
+    } catch (e) { /* almacenamiento lleno o bloqueado, no es crítico */ }
   }, [productos, cargandoStorage]);
 
   // guardarProducto: agrega un producto nuevo o actualiza uno existente
@@ -1029,8 +1048,13 @@ export default function App() {
               </div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(min(265px,100%),1fr))",gap:14}}>
                 {productosFiltrados.map(producto=>{
+                  if(!producto || !producto.id) return null; // protección contra datos corruptos
                   if(producto.esDiente) return <DienteCard key={producto.id} producto={producto} onAgregar={agregarDienteAlCarrito} C={C} fmt={fmt}/>;
-                  if(producto.esColor) return <ColorVarianteCard key={producto.id} producto={producto} carrito={carrito} onAgregar={agregarAlCarrito} C={C} fmt={fmt}/>;
+                  if(producto.esColor){
+                    if(!Array.isArray(producto.colores)||producto.colores.length===0) return null;
+                    return <ColorVarianteCard key={producto.id} producto={producto} carrito={carrito} onAgregar={agregarAlCarrito} C={C} fmt={fmt}/>;
+                  }
+                  if(!Array.isArray(producto.variantes)||producto.variantes.length===0) return null;
                   return <VarianteCard key={producto.id} producto={producto} carrito={carrito} onAgregar={agregarAlCarrito} C={C} fmt={fmt}/>;
                 })}
               </div>
