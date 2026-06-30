@@ -178,8 +178,62 @@ const GlobalStyles = () => (
     .brand-letter:nth-child(5){animation-delay:0.32s} .brand-letter:nth-child(6){animation-delay:0.40s}
     .brand-letter:nth-child(7){animation-delay:0.48s} .brand-letter:nth-child(8){animation-delay:0.56s}
     .brand-letter:nth-child(9){animation-delay:0.64s} .brand-letter:nth-child(10){animation-delay:0.72s}
-    .futuristic-header { background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 40%,#0d2d14 100%) !important; border-bottom:2px solid #4aad52 !important; box-shadow:0 2px 20px rgba(74,173,82,0.25) !important; }
-    .header-grid-bg { position:absolute; inset:0; opacity:0.06; pointer-events:none; background-image:linear-gradient(rgba(74,173,82,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(74,173,82,0.8) 1px,transparent 1px); background-size:24px 24px; }
+    .dental-header {
+      background: linear-gradient(135deg, #0d1f0f 0%, #122b14 50%, #0a1a0c 100%) !important;
+      border-bottom: 3px solid transparent !important;
+      border-image: linear-gradient(90deg, #2d7a34, #4aad52, #6dbf5a, #4aad52, #2d7a34) 1 !important;
+      box-shadow: 0 4px 24px rgba(74,173,82,0.2), inset 0 -1px 0 rgba(74,173,82,0.15) !important;
+      position: relative;
+    }
+    .dental-header-bg {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    /* Patrón de dientes pequeños en el fondo del header */
+    .dental-header-bg::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%234aad52' stroke-linecap='round' stroke-linejoin='round' opacity='0.13'%3E%3C!-- Espatula dental (izq arriba) --%3E%3Cpath d='M10 5 L14 5 L16 18 L14 22 Q12 26 10 22 L8 18 Z' fill='%234aad52' stroke='none'/%3E%3Crect x='11' y='22' width='2' height='35' rx='1' fill='%234aad52' stroke='none'/%3E%3C!-- Sonda exploradora (der arriba) --%3E%3Cpath d='M95 8 L97 8 L97 45 Q97 50 100 54 Q103 58 103 62' stroke='%234aad52' stroke-width='2' fill='none'/%3E%3Ccircle cx='103' cy='64' r='2' fill='%234aad52'/%3E%3C!-- Espejo dental (centro) --%3E%3Ccircle cx='60' cy='25' r='10' stroke='%234aad52' stroke-width='2' fill='none'/%3E%3Ccircle cx='60' cy='25' r='6' fill='%234aad52' opacity='0.06'/%3E%3Crect x='58.5' y='35' width='3' height='30' rx='1.5' fill='%234aad52'/%3E%3C!-- Alicate/Pinza (izq abajo) --%3E%3Cpath d='M15 70 L22 70 L22 72 L19 80 L22 88 L22 90 L15 90 L15 88 L18 80 L15 72 Z' fill='%234aad52' opacity='0.5'/%3E%3Crect x='18' y='90' width='2' height='20' rx='1' fill='%234aad52'/%3E%3Crect x='14' y='90' width='2' height='20' rx='1' fill='%234aad52' opacity='0.6'/%3E%3C!-- Cureta (der abajo) --%3E%3Crect x='98' y='72' width='3' height='28' rx='1.5' fill='%234aad52'/%3E%3Cpath d='M97 72 Q94 66 92 62 Q90 58 91 55 Q93 52 96 55 Q99 58 99 62 L99 72 Z' fill='%234aad52' opacity='0.7'/%3E%3C!-- Jeringa (diagonal centro-abajo) --%3E%3Crect x='52' y='68' width='5' height='35' rx='2' fill='%234aad52' opacity='0.5'/%3E%3Crect x='50' y='65' width='9' height='6' rx='2' fill='%234aad52'/%3E%3Cpath d='M54.5 103 L54.5 112' stroke='%234aad52' stroke-width='1.5'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 120px 120px;
+    }
+    /* Línea de luz superior animada */
+    .dental-header-bg::after {
+      content: "";
+      position: absolute; top: 0; left: -100%; width: 60%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(74,173,82,0.8), transparent);
+      animation: headerScan 4s ease-in-out infinite;
+    }
+    @keyframes headerScan {
+      0%   { left: -60%; }
+      100% { left: 120%; }
+    }
+    .brand-subtitle {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6dbf5a;
+      opacity: 0.85;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .brand-name {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      font-family: 'Georgia', serif;
+      filter: drop-shadow(0 0 8px rgba(74,173,82,0.5));
+    }
+    .carrito-btn-vacio {
+      background: rgba(255,255,255,0.07) !important;
+      border: 1.5px solid rgba(74,173,82,0.35) !important;
+      backdrop-filter: blur(4px);
+    }
+    .carrito-btn-lleno {
+      background: linear-gradient(135deg, #2d7a34, #4aad52) !important;
+      border: 2px solid #6dbf5a !important;
+      box-shadow: 0 0 12px rgba(74,173,82,0.5) !important;
+    }
     .ws-scan { position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(37,211,102,0.7),transparent); animation:scanLine 1.8s linear infinite; pointer-events:none; border-radius:2px; }
     @keyframes spinBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .ws-btn-outer {
@@ -782,21 +836,54 @@ export default function App() {
       <div style={{ position:"relative", zIndex:1 }}>
 
         {/* HEADER */}
-        <header className="futuristic-header" style={{ color:"white", position:"sticky", top:0, zIndex:100 }}>
-          <div className="header-grid-bg" />
-          <div style={{ maxWidth:1100, margin:"0 auto", padding:"10px 14px", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8, position:"relative" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-              <LogoImg style={{ width:90, height:90, borderRadius:"50%", background:"white", padding:4, boxShadow:"0 0 20px rgba(74,173,82,0.7), 0 0 40px rgba(74,173,82,0.3)" }} />
+        {/* ── HEADER DENTAL ── */}
+        <header className="dental-header" style={{ color:"white", position:"sticky", top:0, zIndex:100 }}>
+          {/* Fondo con patrón de dientes y línea de luz */}
+          <div className="dental-header-bg" />
+
+          <div style={{ maxWidth:1100, margin:"0 auto", padding:"12px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:10, position:"relative" }}>
+
+            {/* Logo + nombre */}
+            <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+              {/* Logo circular con doble halo verde */}
+              <div style={{ position:"relative", flexShrink:0 }}>
+                <div style={{ position:"absolute", inset:-5, borderRadius:"50%", background:"conic-gradient(from 0deg, #2d7a34, #4aad52, #6dbf5a, #4aad52, #2d7a34)", animation:"spinBorder 6s linear infinite", opacity:0.7 }} />
+                <LogoImg style={{ width:80, height:80, borderRadius:"50%", background:"white", padding:3, position:"relative", zIndex:1, display:"block" }} />
+              </div>
+
+              {/* Nombre y subtítulo */}
               <div>
-                <div style={{ fontSize:11, opacity:0.7, letterSpacing:3, textTransform:"uppercase", color:"#4aad52", marginBottom:2 }}>🦷 Catálogo & Cotizador</div>
-                <div style={{ display:"flex", alignItems:"baseline", gap:0, fontFamily:"monospace" }}>
-                  {"GEA-".split("").map((l,i)=><span key={i} className="brand-letter neon" style={{fontSize:21,fontWeight:900,color:"white",letterSpacing:1}}>{l}</span>)}
-                  {"DENTAL".split("").map((l,i)=><span key={i} className="brand-letter neon" style={{fontSize:21,fontWeight:900,color:"#4aad52",letterSpacing:1}}>{l}</span>)}
+                <div className="brand-subtitle">
+                  <svg width="10" height="15" viewBox="0 0 70 100" fill="#6dbf5a">
+                    <path d="M13 28 C13 10 20 4 35 4 C50 4 57 10 57 28 C57 38 54 44 50 48 L20 48 C16 44 13 38 13 28 Z"/>
+                    <path d="M20 48 C22 52 25 54 27 54 L43 54 C45 54 48 52 50 48 Z" opacity="0.8"/>
+                    <path d="M27 54 C26 60 24 72 22 82 C21 88 23 94 26 93 C29 92 30 84 31 76 C32 68 32 60 32 54 Z" opacity="0.7"/>
+                    <path d="M38 54 C38 60 38 68 39 76 C40 84 41 92 44 93 C47 94 49 88 48 82 C46 72 44 60 43 54 Z" opacity="0.7"/>
+                  </svg>
+                  Catálogo &amp; Cotizador Dental
+                </div>
+                <div className="brand-name">
+                  {"GEA-".split("").map((l,i)=>(
+                    <span key={i} className="brand-letter neon" style={{fontSize:26,fontWeight:900,color:"white",letterSpacing:2,fontFamily:"Georgia,serif"}}>{l}</span>
+                  ))}
+                  {"DENTAL".split("").map((l,i)=>(
+                    <span key={i} className="brand-letter neon" style={{fontSize:26,fontWeight:900,color:"#4aad52",letterSpacing:2,fontFamily:"Georgia,serif"}}>{l}</span>
+                  ))}
+                </div>
+                {/* Tagline dental */}
+                <div style={{ fontSize:10, color:"rgba(109,191,90,0.6)", letterSpacing:2, marginTop:2, textTransform:"uppercase" }}>
+                  Insumos de calidad · Profesionales &amp; Estudiantes
                 </div>
               </div>
             </div>
-            <button onClick={()=>setVista(v=>v==="carrito"?"catalogo":"carrito")} className={cartAnim?"cart-bounce":""} style={{ background:cantTotal>0?C.verde:"rgba(255,255,255,0.12)", color:"white", border:"2px solid "+(cantTotal>0?C.verdeOsc:"rgba(255,255,255,0.3)"), borderRadius:30, padding:"10px 20px", cursor:"pointer", fontFamily:"inherit", fontSize:14, fontWeight:700, display:"flex", alignItems:"center", gap:8 }}>
-              🛒 {cantTotal>0?cantTotal+" items · "+fmt(total):"Cotización vacía"}
+
+            {/* Botón carrito */}
+            <button
+              onClick={()=>setVista(v=>v==="carrito"?"catalogo":"carrito")}
+              className={cartAnim?"cart-bounce "+(cantTotal>0?"carrito-btn-lleno":"carrito-btn-vacio"):(cantTotal>0?"carrito-btn-lleno":"carrito-btn-vacio")}
+              style={{ color:"white", border:"none", borderRadius:30, padding:"11px 22px", cursor:"pointer", fontFamily:"Georgia,serif", fontSize:14, fontWeight:700, display:"flex", alignItems:"center", gap:8, transition:"all 0.2s" }}
+            >
+              🦷 {cantTotal>0?cantTotal+" productos · "+fmt(total):"Ver cotización"}
             </button>
           </div>
         </header>
